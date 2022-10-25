@@ -13,13 +13,14 @@ const {
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
+const address = '0.0.0.0' // or 'localhost'
 
 const botName = 'Chat Bot'
 
-// get folder
+// pegar scripts do front-end
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
-// connect client
+// em conexão com o socket
 io.on('connection', (socket) => {
   console.log('user connected with socket id:', socket.id)
 
@@ -28,10 +29,11 @@ io.on('connection', (socket) => {
 
     socket.join(user.room)
 
-    // welcome user
+    // mensagem de bem-vindo
     socket.emit('message', formatMessage(botName, 'Welcome!'))
 
-    //broadcast to all clients except the one that is connecting
+    // mensagem de novo usuário
+    // menos ao usuário que se conectou
     socket.broadcast
       .to(user.room)
       .emit(
@@ -39,14 +41,14 @@ io.on('connection', (socket) => {
         formatMessage(botName, ` ${user.username} has joined the chat`)
       )
 
-    // send users and room info
+    // envia informações de usuários e sala
     io.to(user.room).emit('roomUsers', {
       room: user.room,
       users: getRoomUsers(user.room),
     })
   })
 
-  // Listen chat message
+  // event listener para as mensagens do chat
   socket.on('chatMessage', (msg) => {
     console.log('Chat message: ', msg)
 
@@ -71,4 +73,6 @@ io.on('connection', (socket) => {
 
 const PORT = 3000
 
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+server.listen(PORT, address, () =>
+  console.log(`Server is running on port ${PORT}`)
+)

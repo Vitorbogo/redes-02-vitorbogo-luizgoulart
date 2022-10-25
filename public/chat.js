@@ -3,23 +3,23 @@ const chatMessages = document.querySelector('.chat-messages')
 const roomName = document.getElementById('room-name')
 const userList = document.getElementById('users')
 
-// get username and room from URL
+// pega username e room apartir do cabecalho da URL
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 })
 
 const socket = io()
 
-// join room
+// entra na sala
 socket.emit('joinRoom', { username, room })
 
-// get room and users
+// pega sala e users
 socket.on('roomUsers', ({ room, users }) => {
   outputRoomName(room)
   outputUsers(users)
 })
 
-// Msg from svr
+// Msg -> svr
 socket.on('message', (message) => {
   console.log(message)
   outputMessage(message)
@@ -36,12 +36,12 @@ chatForm.addEventListener('submit', (e) => {
   console.log('Chat message: ', msg)
   socket.emit('chatMessage', msg)
 
-  //clear input
+  //limpa input
   e.target.elements.msg.value = ''
   e.target.elements.msg.focus()
 })
 
-// output message to DOM
+// output message -> DOM
 function outputMessage(message) {
   const div = document.createElement('div')
   div.classList.add('message')
