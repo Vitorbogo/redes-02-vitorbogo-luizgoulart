@@ -3,6 +3,8 @@ const express = require('express')
 const http = require('http')
 const socketio = require('socket.io')
 const formatMessage = require('../public/utils/messages')
+const userRouter = require('./routes/user.js')();
+const orderRouter = require('./routes/order.js')();
 const {
   userJoin,
   getCurrentUser,
@@ -10,11 +12,16 @@ const {
   getRoomUsers,
 } = require('../public/utils/users')
 
+const serverPort  = 3000
+const webSocketPort = 8080
+
 const app = express()
-const server = http.createServer(app)
+const server = http.Server(app)
 const io = socketio(server)
 
 const botName = 'Chat Bot'
+
+//
 
 // get folder
 app.use(express.static(path.join(__dirname, '..', 'public')))
@@ -29,14 +36,14 @@ io.on('connection', (socket) => {
     socket.join(user.room)
 
     // welcome user
-    socket.emit('message', formatMessage(botName, 'Welcome!'))
+    socket.emit('message', formatMessage(botName, 'Bem-Vindo!'))
 
     //broadcast to all clients except the one that is connecting
     socket.broadcast
       .to(user.room)
       .emit(
         'message',
-        formatMessage(botName, ` ${user.username} has joined the chat`)
+        formatMessage(botName, ` ${user.username} entrou na sala.`)
       )
 
     // send users and room info
@@ -63,12 +70,33 @@ io.on('connection', (socket) => {
     if (user) {
       io.to(user.room).emit(
         'message',
-        formatMessage(botName, ` ${user.username} has left the chat`)
+        formatMessage(botName, ` ${user.username} saiu da sala.`)
       )
     }
   })
 })
 
-const PORT = 3000
+//
+app.use(userRouter);
+app.use(orderRouter);
 
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
+const fs = require('fs');
+/* backslash for windows, in unix it would be forward slash */
+const routes_directory = require('path').resolve(__dirname) + '/routes/'; 
+
+fs.readdirSync(routes_directory).forEach(route_file => {
+  try {
+    app.use('/', require(routes_directory + route_file)());
+  } catch (error) {
+    console.log(`Encountered Error initializing routes from ${route_file}`);
+    console.log(error);
+  }
+});
+
+//
+
+server.listen(serverPort, () => console.log(`Server is running on port ${serverPort}`))
+
+app.listen(webSocketPort, () => {
+  console.log(`My app listening at http://localhost:${webSocketPort}`);
+});
