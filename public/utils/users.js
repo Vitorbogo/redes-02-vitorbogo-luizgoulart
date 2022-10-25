@@ -19,7 +19,7 @@ function userLeave(id) {
   const index = users.findIndex((user) => user.id === id)
 
   if (index !== -1) {
-    // array[0] to return just the user
+// array[0] to return just the user
     return users.splice(index, 1)[0]
   }
 }
