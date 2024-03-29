@@ -1,0 +1,32 @@
+# Arquivos e diretórios a serem ignorados pelo Git
+
+# Arquivos de configuração
+*.env
+*.env.*
+
+# Dependências e módulos
+/node_modules
+/bower_components
+
+# Arquivos gerados
+/dist
+/build
+/out
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+.tmp
+.temp
+.temp-*
+
+# Arquivos de backup
+*.bak
+*.swp
+*~
+
+# Arquivos de cache
+.cache
+# Pasta do node_modules
+node_modules/
