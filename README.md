@@ -1,5 +1,6 @@
 # Trabalho de redes
-Aplicação simulando um chat em tempo real, com timestamp das mengens enviadas, junto com sistema de salas
+
+Aplicação simulando um chat em tempo real, com timestamp das mensagens enviadas, junto com sistema de salas
 
 Projeto feito em Node, JS, Express e Socket.io
 

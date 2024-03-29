@@ -1,0 +1,16 @@
+{
+  "name": "Chat PWA",
+  "short_name": "PWA",
+  "description": "Integrando PWA ao chat",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#cecece",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "public/assets/communication.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ]
+}

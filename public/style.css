@@ -39,8 +39,6 @@ a {
   border-radius: 13px;
 }
 
-/* Chat Page */
-
 .chat-container {
   max-width: 1100px;
   background: #fff;
@@ -138,7 +136,6 @@ a {
   border-radius: 13px;
 }
 
-/* Join Page */
 .join-container {
   max-width: 500px;
   margin: 80px auto;
